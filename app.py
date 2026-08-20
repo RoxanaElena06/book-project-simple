@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from nl_to_sql import question_to_sql, phrase_answer
-from execute_sql import execute_query
+from execute_sql import execute_query, get_table_preview
 
 #Page setup
 st.set_page_config(
