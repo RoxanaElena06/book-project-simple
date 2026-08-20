@@ -1,16 +1,3 @@
-"""
-nl_to_sql.py (simplified)
-----------------------------
-Two jobs for this file:
-  1. Turn a plain-English question into a SQL query (using Claude)
-  2. Turn SQL query results back into a plain-English sentence (using Claude)
-
-Simplified vs. the real version:
-  - No markdown-fence cleanup (the real version needs this because Claude
-    sometimes ignores formatting instructions -- skipped here for clarity)
-  - No result-row limiting before phrasing the answer
-"""
-
 import os
 import anthropic
 from schema_context import SCHEMA_CONTEXT
@@ -18,7 +5,7 @@ from schema_context import SCHEMA_CONTEXT
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 
-# ── Turn a question into SQL ────────────────────────────────────────────────
+#Turn a question into SQL
 def question_to_sql(question):
     prompt = f"""Here is a database schema:
 {SCHEMA_CONTEXT}
@@ -35,7 +22,7 @@ Write ONE SQL SELECT query (nothing else, no explanation) that answers:
     return sql_query
 
 
-# ── Turn SQL results into a plain-English sentence ──────────────────────────
+#Turn SQL results into a English sentence
 def phrase_answer(question, columns, rows):
     results_as_text = f"{columns}\n{rows}"
 
@@ -52,7 +39,7 @@ Answer the question in one short sentence, using only this data.
     return response.content[0].text.strip()
 
 
-# ── TRY IT ───────────────────────────────────────────────────────────────────
+#TRY IT
 if __name__ == "__main__":
     from execute_sql import execute_query
 

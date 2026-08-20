@@ -1,17 +1,7 @@
-"""
-app.py (simplified)
-----------------------
-A minimal Streamlit page: type a question, get SQL + an answer back.
-
-Simplified vs. the real version:
-  - No Streamlit secrets bridging (assumes ANTHROPIC_API_KEY etc. are
-    already set as normal environment variables -- fine for running
-    locally, would need the secrets bridge again for a real cloud
-    deployment, see the real app.py for that fix)
-  - No custom styling/CSS
-"""
-
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
+
 from nl_to_sql import question_to_sql, phrase_answer
 from execute_sql import execute_query
 
