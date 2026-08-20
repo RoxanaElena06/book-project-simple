@@ -1,6 +1,14 @@
+import os
 import streamlit as st
 from dotenv import load_dotenv
 load_dotenv()
+
+try:
+    for key in ["ANTHROPIC_API_KEY", "DATABRICKS_HOST", "DATABRICKS_HTTP_PATH", "DATABRICKS_TOKEN"]:
+        if key in st.secrets:
+            os.environ[key] = st.secrets[key]
+except Exception:
+    pass 
 
 from nl_to_sql import question_to_sql, phrase_answer
 from execute_sql import execute_query, get_table_preview
