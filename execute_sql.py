@@ -1,17 +1,15 @@
 import os
 from databricks import sql
 
-
 #only allow queries that start with SELECT
 def is_safe_query(query):
     return query.strip().upper().startswith("SELECT")
-
-
-#run the query 
+ 
+#run the query, connecting to Databricks
 def execute_query(query):
     if not is_safe_query(query):
         raise ValueError(f"This query isn't allowed: {query}")
-
+ 
     connection = sql.connect(
         server_hostname=os.environ["DATABRICKS_HOST"],
         http_path=os.environ["DATABRICKS_HTTP_PATH"],
@@ -19,11 +17,16 @@ def execute_query(query):
     )
     cursor = connection.cursor()
     cursor.execute(query)
-
+ 
     columns = [description[0] for description in cursor.description]
     rows = cursor.fetchall()
-
+ 
     cursor.close()
     connection.close()
-
+ 
     return columns, rows
+ 
+#A small helper used by app.py to show a quick data preview
+def get_table_preview(table_name, limit=5):
+    query = f"SELECT * FROM workspace.default.{table_name} LIMIT {limit}"
+    return execute_query(query)
